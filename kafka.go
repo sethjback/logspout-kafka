@@ -110,6 +110,17 @@ func newConfig() *sarama.Config {
 		}
 	}
 
+	if opt := os.Getenv("KAFKA_MAX_MESSAGE_BYTES"); opt != "" {
+		mb, err := strconv.Atoi(opt)
+		if err != nil {
+			if os.Getenv("DEBUG") != "" {
+				log.Println("KAFKA_MAX_MESSAGE_BYTES value invalid", err)
+			}
+		} else {
+			config.Producer.MaxMessageBytes = mb
+		}
+	}
+
 	return config
 }
 
